@@ -36,8 +36,6 @@ export class Relatorios implements OnInit {
   get totalEntradas() { return this.financeStore.totalEntradas; }
   get totalSaidas() { return this.financeStore.totalSaidas; }
   get saldoLiquido() { return this.financeStore.saldoLiquido; }
-  get metaEconomiaPorcentagem() { return this.financeStore.metaEconomiaPorcentagem; }
-  get faltaParaMeta() { return this.financeStore.faltaParaMeta; }
 
   // Filtros vinculados ao ngModel do template
   get periodoFiltro() { return this.financeStore.periodoFiltro; }

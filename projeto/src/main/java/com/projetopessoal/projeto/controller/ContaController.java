@@ -54,9 +54,10 @@ public class ContaController {
         
         // Atribui cores padrões baseadas no banco se não enviadas ou vazias
         if (conta.getCor() == null || conta.getCor().trim().isEmpty()) {
-            if (conta.getBanco().equalsIgnoreCase("CAIXA")) conta.setCor("bg-blue-700");
-            else if (conta.getBanco().equalsIgnoreCase("NUBANK")) conta.setCor("bg-purple-600");
-            else if (conta.getBanco().equalsIgnoreCase("ITAÚ")) conta.setCor("bg-orange-500");
+            if (conta.getBanco().equalsIgnoreCase("CAIXA")) conta.setCor("#005CA9");
+            else if (conta.getBanco().equalsIgnoreCase("NUBANK")) conta.setCor("#8A05BE");
+            else if (conta.getBanco().equalsIgnoreCase("ITAÚ")) conta.setCor("#FF8200");
+            else if (conta.getBanco().equalsIgnoreCase("PICPAY")) conta.setCor("#2EDB6C");
             else conta.setCor("bg-gray-600");
         }
 

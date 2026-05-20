@@ -25,7 +25,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final VerificationService verificationService;
 
-    @Value("${cookie.secure:true}")
+    @Value("${cookie.secure:false}")
     private boolean cookieSecure;
 
     private static final int ACCESS_TOKEN_EXPIRY = 2 * 60 * 60; // 2 horas
@@ -51,9 +51,16 @@ public class AuthController {
         cookie.setSecure(cookieSecure);
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
-        // Partitioned é necessário para versões recentes do Chrome em contextos cross-site (CHIPS)
-        response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Path=/; HttpOnly; Secure; SameSite=None; Partitioned", 
-            name, value, maxAge));
+        
+        if (cookieSecure) {
+            // Partitioned é necessário para versões recentes do Chrome em contextos cross-site (CHIPS)
+            response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Path=/; HttpOnly; Secure; SameSite=None; Partitioned", 
+                name, value, maxAge));
+        } else {
+            // Para desenvolvimento local (HTTP), não enviamos Secure nem SameSite=None para evitar que o navegador rejeite o cookie
+            response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax", 
+                name, value, maxAge));
+        }
     }
 
     /**

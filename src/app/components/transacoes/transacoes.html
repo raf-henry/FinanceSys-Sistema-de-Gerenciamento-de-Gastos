@@ -1,94 +1,89 @@
 <div class="flex min-h-screen text-on-surface bg-background">
   <!-- SIDEBAR -->
-  <aside 
-    id="sidebar"
-    [class.w-64]="!sidebarService.isCollapsed()" 
-    [class.w-20]="sidebarService.isCollapsed()"
+  <aside id="sidebar" [class.w-64]="!sidebarService.isCollapsed()" [class.w-20]="sidebarService.isCollapsed()"
     class="bg-surface-container-lowest flex-shrink-0 transition-[width] duration-300 ease-in-out flex flex-col z-20 sticky top-0 h-screen overflow-hidden">
-    
+
     <div class="h-[73px] flex items-center border-b border-outline-variant transition-all duration-300"
-         [class.justify-between]="!sidebarService.isCollapsed()"
-         [class.justify-center]="sidebarService.isCollapsed()"
-         [class.px-4]="!sidebarService.isCollapsed()">
-      
+      [class.justify-between]="!sidebarService.isCollapsed()" [class.justify-center]="sidebarService.isCollapsed()"
+      [class.px-4]="!sidebarService.isCollapsed()">
+
       <!-- Logo section when expanded -->
-      <div class="flex items-center gap-2 overflow-hidden transition-all duration-300" 
-           [class.opacity-0]="sidebarService.isCollapsed()"
-           [class.w-0]="sidebarService.isCollapsed()">
+      <div class="flex items-center gap-2 overflow-hidden transition-all duration-300"
+        [class.opacity-0]="sidebarService.isCollapsed()" [class.w-0]="sidebarService.isCollapsed()">
         <span class="material-symbols-outlined text-primary flex-shrink-0">account_balance</span>
         <span class="text-xl font-bold tracking-tight whitespace-nowrap text-on-surface">FinanceSys</span>
       </div>
 
       <!-- Toggle Button (Centralized when collapsed) -->
-      <button (click)="toggleSidebar()" 
+      <button (click)="toggleSidebar()"
         class="p-3 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors flex items-center justify-center">
         <span class="material-symbols-outlined">{{ sidebarService.isCollapsed() ? 'menu' : 'menu_open' }}</span>
       </button>
     </div>
 
     <nav class="flex-1 py-6 flex flex-col gap-2 px-3 overflow-y-auto custom-scrollbar border-r border-outline-variant">
-      <a routerLink="/home" class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
-         [class.justify-start]="true">
+      <a routerLink="/home"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
         <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">dashboard</span>
-        <span class="whitespace-nowrap overflow-hidden transition-all duration-300" 
-              [class.w-0]="sidebarService.isCollapsed()" 
-              [class.opacity-0]="sidebarService.isCollapsed()"
-              [class.ml-[-8px]]="sidebarService.isCollapsed()">Dashboard</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Dashboard</span>
       </a>
 
-      <a routerLink="/contas" class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
-         [class.justify-start]="true">
+      <a routerLink="/contas"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
         <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">account_balance_wallet</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
-              [class.w-0]="sidebarService.isCollapsed()"
-              [class.opacity-0]="sidebarService.isCollapsed()"
-              [class.ml-[-8px]]="sidebarService.isCollapsed()">Contas</span>
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Contas</span>
       </a>
 
-      <a routerLink="/transacoes" class="flex items-center gap-4 py-3 px-4 rounded-full bg-secondary-container text-on-secondary-container font-medium transition-all duration-300"
-         [class.justify-start]="true">
+      <a routerLink="/transacoes"
+        class="flex items-center gap-4 py-3 px-4 rounded-full bg-secondary-container text-on-secondary-container font-medium transition-all duration-300"
+        [class.justify-start]="true">
         <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">receipt_long</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
-              [class.w-0]="sidebarService.isCollapsed()"
-              [class.opacity-0]="sidebarService.isCollapsed()"
-              [class.ml-[-8px]]="sidebarService.isCollapsed()">Transações</span>
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Transações</span>
       </a>
 
-      <div class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
-         [class.justify-start]="true">
+      <div
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
+        [class.justify-start]="true">
         <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">pie_chart</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
-              [class.w-0]="sidebarService.isCollapsed()"
-              [class.opacity-0]="sidebarService.isCollapsed()"
-              [class.ml-[-8px]]="sidebarService.isCollapsed()">Orçamentos</span>
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Orçamentos</span>
       </div>
 
-      <div class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
-         [class.justify-start]="true">
-        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">bar_chart</span>
+      <a routerLink="/relatorios"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">analytics</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
-              [class.w-0]="sidebarService.isCollapsed()"
-              [class.opacity-0]="sidebarService.isCollapsed()"
-              [class.ml-[-8px]]="sidebarService.isCollapsed()">Relatórios</span>
-      </div>
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Relatórios</span>
+      </a>
 
       <!-- Bottom Actions -->
       <div class="mt-auto pt-6 flex flex-col gap-2 border-t border-outline-variant/30">
-        <a routerLink="/configuracoes" class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container w-full"
-           [class.justify-start]="true">
+        <a routerLink="/configuracoes"
+          class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container w-full"
+          [class.justify-start]="true">
           <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">settings</span>
           <span class="whitespace-nowrap overflow-hidden transition-all duration-300 text-left"
-                [class.w-0]="sidebarService.isCollapsed()"
-                [class.opacity-0]="sidebarService.isCollapsed()"
-                [class.ml-[-8px]]="sidebarService.isCollapsed()">Configurações</span>
+            [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+            [class.ml-[-8px]]="sidebarService.isCollapsed()">Configurações</span>
         </a>
 
-        <button (click)="logout()" class="flex items-center gap-4 py-3 px-4 rounded-full text-error font-medium transition-all duration-300 hover:bg-error-container/20 w-full">
+        <button (click)="logout()"
+          class="flex items-center gap-4 py-3 px-4 rounded-full text-error font-medium transition-all duration-300 hover:bg-error-container/20 w-full">
           <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">logout</span>
           <span class="whitespace-nowrap overflow-hidden transition-all duration-300 text-left"
-                [class.w-0]="sidebarService.isCollapsed()"
-                [class.opacity-0]="sidebarService.isCollapsed()"
-                [class.ml-[-8px]]="sidebarService.isCollapsed()">Sair</span>
+            [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+            [class.ml-[-8px]]="sidebarService.isCollapsed()">Sair</span>
         </button>
       </div>
     </nav>
@@ -97,14 +92,18 @@
   <!-- MAIN AREA -->
   <div class="flex-1 flex flex-col min-w-0">
     <!-- HEADER -->
-    <header class="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex justify-between items-center sticky top-0 z-50 h-[73px]">
+    <header
+      class="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex justify-between items-center sticky top-0 z-50 h-[73px]">
       <div class="flex items-center">
         <h2 class="text-xl font-bold tracking-tight text-on-surface">Transações</h2>
       </div>
       <div class="flex items-center gap-4">
         <div class="relative hidden sm:block">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-          <input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary outline-none" placeholder="Buscar..." type="text"/>
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+          <input
+            class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary outline-none"
+            placeholder="Buscar..." type="text" />
         </div>
         <button class="p-2 hover:bg-surface-container-low rounded-full transition-transform active:scale-95">
           <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
@@ -113,7 +112,8 @@
           <div class="flex flex-col items-end">
             <span class="text-sm font-bold text-on-surface">{{ userName }}</span>
           </div>
-          <div class="w-10 h-10 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary font-black animate-fade-in shadow-sm select-none">
+          <div
+            class="w-10 h-10 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary font-black animate-fade-in shadow-sm select-none">
             {{ userName.charAt(0).toUpperCase() }}
           </div>
         </div>
@@ -123,22 +123,31 @@
     <!-- CONTENT -->
     <main class="flex-1 overflow-y-auto">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      
+
         <!-- Filters Section -->
         <section class="mb-8">
-          <div class="bg-white rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.04)] border border-slate-200 p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+          <div
+            class="bg-white rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.04)] border border-slate-200 p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
             <div class="flex flex-wrap items-end gap-6">
               <div class="flex-1 min-w-[300px]">
-                <label class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Período (Início / Fim)</label>
+                <label
+                  class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Período
+                  (Início / Fim)</label>
                 <div class="flex items-center gap-2">
-                  <input [ngModel]="dataInicio()" (ngModelChange)="dataInicio.set($event)" class="w-full px-4 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors" type="date"/>
+                  <input [ngModel]="dataInicio()" (ngModelChange)="dataInicio.set($event)"
+                    class="w-full px-4 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors"
+                    type="date" />
                   <span class="text-on-surface-variant">até</span>
-                  <input [ngModel]="dataFim()" (ngModelChange)="dataFim.set($event)" class="w-full px-4 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors" type="date"/>
+                  <input [ngModel]="dataFim()" (ngModelChange)="dataFim.set($event)"
+                    class="w-full px-4 py-2 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors"
+                    type="date" />
                 </div>
               </div>
               <div class="flex-1 min-w-[200px]">
-                <label class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Categoria</label>
-                <select [ngModel]="categoriaSelecionada()" (ngModelChange)="categoriaSelecionada.set($event)" class="w-full px-4 py-2.5 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors appearance-none">
+                <label
+                  class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Categoria</label>
+                <select [ngModel]="categoriaSelecionada()" (ngModelChange)="categoriaSelecionada.set($event)"
+                  class="w-full px-4 py-2.5 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors appearance-none">
                   <option value="Todas">Todas as Categorias</option>
                   <option value="Lazer">Lazer</option>
                   <option value="Alimentação">Alimentação</option>
@@ -147,13 +156,17 @@
                 </select>
               </div>
               <div class="flex-1 min-w-[200px]">
-                <label class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Conta</label>
-                <select [(ngModel)]="contaSelecionadaId" (change)="loadTransacoes()" class="w-full px-4 py-2.5 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors appearance-none">
+                <label
+                  class="text-xs font-semibold text-on-surface-variant mb-3 block uppercase tracking-widest">Conta</label>
+                <select [(ngModel)]="contaSelecionadaId" (change)="loadTransacoes()"
+                  class="w-full px-4 py-2.5 bg-surface-container border border-outline-variant rounded-lg text-sm focus:border-primary outline-none transition-colors appearance-none">
                   <option [ngValue]="null">Todas as Contas</option>
-                  <option *ngFor="let conta of contas()" [ngValue]="conta.id">{{ conta.nome }} ({{ conta.banco }})</option>
+                  <option *ngFor="let conta of contas()" [ngValue]="conta.id">{{ conta.nome }} ({{ conta.banco }})
+                  </option>
                 </select>
               </div>
-              <button (click)="loadTransacoes()" class="bg-primary text-white px-8 py-2.5 rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+              <button (click)="loadTransacoes()"
+                class="bg-primary text-white px-8 py-2.5 rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">filter_list</span>
                 Aplicar
               </button>
@@ -166,11 +179,19 @@
           <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
             <h2 class="text-lg font-bold text-slate-800">Extrato Detalhado</h2>
             <div class="flex gap-2">
-              <button (click)="abrirModalParaNovo()" class="bg-primary text-white px-5 py-2 rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+              <button (click)="abrirModalParaNovo()"
+                class="bg-primary text-white px-5 py-2 rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">add</span>
                 Nova Transação
               </button>
-              <button class="p-2 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors text-slate-600 bg-white shadow-sm hover:shadow-md">
+              <label
+                class="p-2 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors text-slate-600 bg-white shadow-sm hover:shadow-md cursor-pointer flex items-center justify-center"
+                title="Importar Extrato">
+                <span class="material-symbols-outlined">upload</span>
+                <input type="file" (change)="onFileSelected($event)" class="hidden">
+              </label>
+              <button
+                class="p-2 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors text-slate-600 bg-white shadow-sm hover:shadow-md">
                 <span class="material-symbols-outlined">download</span>
               </button>
             </div>
@@ -180,54 +201,131 @@
               <!-- HEADER: CAIXA -->
               <thead *ngIf="currentBank() === 'CAIXA'" class="bg-surface-container/50">
                 <tr>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Lançamentos</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Nr. Doc</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Histórico/Complemento</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Favorecido</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">CPF/CNPJ</th>
-                  <th class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Valor (R$)</th>
-                  <th class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Saldo (R$)</th>
-                  <th class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Ações</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Lançamentos</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Nr. Doc</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Histórico/Complemento</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Favorecido</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    CPF/CNPJ</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Saldo (R$)</th>
+                  <th
+                    class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Ações</th>
                 </tr>
               </thead>
 
               <!-- HEADER: PICPAY -->
               <thead *ngIf="currentBank() === 'PICPAY'" class="bg-surface-container/50">
                 <tr>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Data/Hora</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Tipo</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Origem/Destino</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Forma de Pagamento</th>
-                  <th class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Valor (R$)</th>
-                  <th class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Ações</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Data/Hora</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Tipo</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Descrição</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Favorecido</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Forma de Pagamento</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                  <th
+                    class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Ações</th>
+                </tr>
+              </thead>
+
+              <!-- HEADER: NUBANK -->
+              <thead *ngIf="currentBank() === 'NUBANK'" class="bg-surface-container/50">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Data</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Título</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Contraparte</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Categoria / Forma</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                  <th
+                    class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Ações</th>
                 </tr>
               </thead>
 
               <!-- HEADER: DEFAULT -->
               <thead *ngIf="currentBank() !== 'CAIXA' && currentBank() !== 'PICPAY'" class="bg-surface-container/50">
                 <tr>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">ID</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">DESCRIÇÃO / FAVORECIDO</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">CATEGORIA</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Nº DOC</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">DATA</th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">STATUS</th>
-                  <th class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">VALOR (R$)</th>
-                  <th class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">AÇÕES</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    ID</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    DESCRIÇÃO</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    FAVORECIDO</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    CATEGORIA</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Nº DOC</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    DATA</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    STATUS</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    VALOR (R$)</th>
+                  <th
+                    class="px-6 py-4 text-center text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    AÇÕES</th>
                 </tr>
               </thead>
 
               <tbody class="divide-y divide-outline-variant/50">
                 <tr *ngFor="let t of transacoesFiltradas()" class="hover:bg-surface-container-low transition-colors">
-                  
+
                   <!-- ROW: CAIXA -->
                   <ng-container *ngIf="currentBank() === 'CAIXA'">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto | date:'dd/MM/yyyy' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                      date:'dd/MM/yyyy' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.nrDoc || '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.descricao }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.favorecido || '-' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.favorecido || '-' }}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.cpfCnpj || '-' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right" [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                      [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
                       {{ t.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right text-on-surface">
@@ -237,43 +335,83 @@
 
                   <!-- ROW: PICPAY -->
                   <ng-container *ngIf="currentBank() === 'PICPAY'">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                      date:'dd/MM/yyyy HH:mm' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <span [ngClass]="t.tipo === 'RECEITA' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
+                      <span
+                        [ngClass]="t.tipo === 'RECEITA' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                         {{ t.tipo }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.favorecido || t.descricao }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.formaPagamento || 'Saldo PicPay' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right" [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.descricao }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.favorecido || '-' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.formaPagamento ||
+                      'Saldo PicPay' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                      [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
                       {{ t.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
                     </td>
                   </ng-container>
 
+                  <!-- ROW: NUBANK -->
+                  <ng-container *ngIf="currentBank() === 'NUBANK'">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataHora |
+                      date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.tituloExibicao }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                      {{ t.nomeContraparte || '-' }}
+                      <div class="text-[10px] text-on-surface-variant/60">{{ t.instituicaoContraparte }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 mr-1 uppercase">{{
+                        t.categoria }}</span>
+                      <span class="text-[10px] font-medium text-on-surface-variant/70">{{ t.formaPagamento }}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                      [ngClass]="t.tipoMovimentacao === 'ENTRADA' ? 'text-[#0a7a3b]' : (t.tipoMovimentacao === 'RENDIMENTO' ? 'text-primary' : 'text-error')">
+                      {{ t.tipoMovimentacao === 'ENTRADA' ? '+' : (t.tipoMovimentacao === 'RENDIMENTO' ? '+' : '-') }}
+                      R$ {{ t.valor | number:'1.2-2' }}
+                    </td>
+                  </ng-container>
+
                   <!-- ROW: DEFAULT -->
-                  <ng-container *ngIf="currentBank() !== 'CAIXA' && currentBank() !== 'PICPAY'">
+                  <ng-container
+                    *ngIf="currentBank() !== 'CAIXA' && currentBank() !== 'PICPAY' && currentBank() !== 'NUBANK'">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">#{{ t.id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">
                       {{ t.descricao }}
-                      <div *ngIf="t.favorecido" class="text-[10px] text-on-surface-variant/70 uppercase font-bold tracking-tight mt-0.5">
-                        {{ t.favorecido }} <span *ngIf="t.cpfCnpj">({{ t.cpfCnpj }})</span>
-                      </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container border border-outline-variant">
+                      <div *ngIf="t.favorecido" class="font-bold text-on-surface text-xs uppercase tracking-tight">
+                        {{ t.favorecido }}
+                      </div>
+                      <div *ngIf="t.cpfCnpj" class="text-[10px] opacity-60">
+                        {{ t.cpfCnpj }}
+                      </div>
+                      <span *ngIf="!t.favorecido && !t.cpfCnpj">-</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container border border-outline-variant">
                         {{ t.categoria || 'Outros' }}
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.nrDoc || '-' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                      date:'dd/MM/yyyy HH:mm' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <span [ngClass]="t.tipo === 'RECEITA' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
+                      <span
+                        [ngClass]="t.tipo === 'RECEITA' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                         {{ t.tipo === 'RECEITA' ? 'Recebido' : (t.status === 'Parcelado' ? 'Parcelado' : 'Pago') }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right" [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                      [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
                       {{ t.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
                     </td>
                   </ng-container>
@@ -281,10 +419,12 @@
                   <!-- ACTIONS (Shared) -->
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
-                      <button (click)="abrirModalParaEditar(t)" class="p-1 border border-outline-variant rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+                      <button (click)="abrirModalParaEditar(t)"
+                        class="p-1 border border-outline-variant rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
                         <span class="material-symbols-outlined text-[18px]">edit</span>
                       </button>
-                      <button (click)="deletarGasto(t.id)" class="p-1 border border-outline-variant rounded text-on-surface-variant hover:text-error hover:bg-error-container transition-colors">
+                      <button (click)="deletarGasto(t.id)"
+                        class="p-1 border border-outline-variant rounded text-on-surface-variant hover:text-error hover:bg-error-container transition-colors">
                         <span class="material-symbols-outlined text-[18px]">delete</span>
                       </button>
                     </div>
@@ -302,43 +442,59 @@
   </div>
 
   <!-- MODAL -->
-  <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-[100] p-4" *ngIf="showModal">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200 scale-100">
+  <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center z-[100] p-4"
+    *ngIf="showModal">
+    <div
+      class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200 scale-100">
       <div class="px-8 pt-8 pb-4 flex items-center justify-between border-b border-slate-100">
         <h3 class="text-2xl font-bold tracking-tight text-slate-800">{{ isEditing ? 'Editar' : 'Nova' }} Transação</h3>
-        <button (click)="showModal = false" class="p-2 hover:bg-surface-container-low rounded-full transition-all text-on-surface-variant">
+        <button (click)="showModal = false"
+          class="p-2 hover:bg-surface-container-low rounded-full transition-all text-on-surface-variant">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
-      
+
       <div class="px-8 pb-8 space-y-4">
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Descrição</label>
-          <input type="text" [(ngModel)]="novoGasto.descricao" class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium" placeholder="Ex: Aluguel">
+          <label
+            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Descrição</label>
+          <input type="text" [(ngModel)]="novoGasto.descricao"
+            class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium"
+            placeholder="Ex: Aluguel">
         </div>
 
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Categoria</label>
-          <input type="text" [(ngModel)]="novoGasto.categoria" class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium" placeholder="Ex: Lazer, Comida, etc.">
+          <label
+            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Categoria</label>
+          <input type="text" [(ngModel)]="novoGasto.categoria"
+            class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium"
+            placeholder="Ex: Lazer, Comida, etc.">
         </div>
-        
+
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Tipo</label>
-            <select [(ngModel)]="novoGasto.tipo" (change)="novoGasto.status = (novoGasto.tipo === 'RECEITA' ? 'Recebido' : 'Pago')" class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
+            <label
+              class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Tipo</label>
+            <select [(ngModel)]="novoGasto.tipo"
+              (change)="novoGasto.status = (novoGasto.tipo === 'RECEITA' ? 'Recebido' : 'Pago')"
+              class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
               <option value="DESPESA">Saída (Gasto)</option>
               <option value="RECEITA">Entrada (Receita)</option>
             </select>
           </div>
           <div>
-            <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Valor</label>
-            <input type="number" [(ngModel)]="novoGasto.valor" class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
+            <label
+              class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Valor</label>
+            <input type="number" [(ngModel)]="novoGasto.valor"
+              class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
           </div>
         </div>
 
         <div>
-          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Status</label>
-          <select [(ngModel)]="novoGasto.status" class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
+          <label
+            class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Status</label>
+          <select [(ngModel)]="novoGasto.status"
+            class="w-full px-4 py-2.5 bg-surface-container-low border border-transparent focus:border-primary rounded-lg outline-none transition-all text-sm font-medium">
             <option *ngIf="novoGasto.tipo === 'RECEITA'" value="Recebido">Recebido</option>
             <option *ngIf="novoGasto.tipo === 'DESPESA'" value="Pago">Pago</option>
             <option *ngIf="novoGasto.tipo === 'DESPESA'" value="Parcelado">Parcelado</option>
@@ -348,24 +504,31 @@
         <div *ngIf="novoGasto.status === 'Parcelado'" class="bg-surface-container-low p-4 rounded-xl space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Parcelas</label>
-              <input type="number" [(ngModel)]="novoGasto.numeroParcelas" (change)="calcularTotal()" class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary rounded-lg outline-none text-sm font-medium">
+              <label
+                class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Parcelas</label>
+              <input type="number" [(ngModel)]="novoGasto.numeroParcelas" (change)="calcularTotal()"
+                class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary rounded-lg outline-none text-sm font-medium">
             </div>
             <div>
-              <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Valor Un.</label>
-              <input type="number" [(ngModel)]="novoGasto.valorParcela" (change)="calcularTotal()" class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary rounded-lg outline-none text-sm font-medium">
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">Valor
+                Un.</label>
+              <input type="number" [(ngModel)]="novoGasto.valorParcela" (change)="calcularTotal()"
+                class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary rounded-lg outline-none text-sm font-medium">
             </div>
           </div>
           <div class="flex items-center justify-between pt-3 border-t border-outline-variant">
             <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Total Estimado</span>
-            <span class="text-lg font-bold text-on-surface">R$ {{ (novoGasto.numeroParcelas || 0) * (novoGasto.valorParcela || 0) | number:'1.2-2' }}</span>
+            <span class="text-lg font-bold text-on-surface">R$ {{ (novoGasto.numeroParcelas || 0) *
+              (novoGasto.valorParcela || 0) | number:'1.2-2' }}</span>
           </div>
         </div>
       </div>
 
       <div class="px-8 py-6 bg-slate-50 border-t border-slate-100 flex gap-3">
-        <button (click)="showModal = false" class="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm">Cancelar</button>
-        <button (click)="salvarGasto()" class="flex-1 px-4 py-2.5 bg-primary text-white rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200">Salvar</button>
+        <button (click)="showModal = false"
+          class="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm">Cancelar</button>
+        <button (click)="salvarGasto()"
+          class="flex-1 px-4 py-2.5 bg-primary text-white rounded-xl text-sm font-medium shadow-[0_4px_14px_0_rgb(15,23,42,0.39)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.23)] hover:-translate-y-0.5 transition-all duration-200">Salvar</button>
       </div>
     </div>
   </div>

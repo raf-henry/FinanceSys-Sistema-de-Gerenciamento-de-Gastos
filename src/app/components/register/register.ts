@@ -39,7 +39,7 @@ export class Register {
    */
   checkNumberSymbol(): boolean {
     const p = this.registerData.password;
-    return /\d/.test(p) && /[@$!%*?&]/.test(p);
+    return /\d/.test(p) && /[#@$!%*?&]/.test(p);
   }
 
   sendCode() {
@@ -55,9 +55,9 @@ export class Register {
     }
 
     // Validação de senha simplificada (deve coincidir com o Backend)
-    const passwordPattern = /^(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordPattern = /^(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/;
     if (!passwordPattern.test(this.registerData.password)) {
-      this.errorMessage.set('A senha deve ter pelo menos 8 caracteres, incluindo um número e um caractere especial (@$!%*?&).');
+      this.errorMessage.set('A senha deve ter pelo menos 8 caracteres, incluindo um número e um caractere especial (#@$!%*?&).');
       return;
     }
 
@@ -65,10 +65,10 @@ export class Register {
       this.errorMessage.set('As senhas não coincidem!');
       return;
     }
-    
+
     this.isLoading.set(true);
     this.errorMessage.set('');
-    
+
     this.authService.sendVerificationCode(this.registerData.email).subscribe({
       next: (res: any) => {
         console.log('Resposta do servidor (send-code):', res);
@@ -93,7 +93,7 @@ export class Register {
 
     const { email, password, code } = this.registerData;
     console.log('Finalizando registro para:', email);
-    
+
     this.authService.register({ email, password, code }).subscribe({
       next: (response) => {
         this.isModalOpen.set(false);

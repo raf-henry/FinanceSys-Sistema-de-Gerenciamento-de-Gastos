@@ -14,7 +14,7 @@ public class RegisterRequest {
 
     @NotBlank(message = "Senha é obrigatória")
     @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[#@$!%*?&])[A-Za-z\\d#@$!%*?&]{8,}$", 
              message = "A senha deve conter ao menos um número e um caractere especial")
     private String password;
 

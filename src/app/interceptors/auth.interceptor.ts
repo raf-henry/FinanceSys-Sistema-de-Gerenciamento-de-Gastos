@@ -15,8 +15,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error) => {
-      // Se o backend retornar 401 (não autorizado/cookie expirado)
-      if (error.status === 401) {
+      // Se o backend retornar 401 ou 403 (não autorizado/cookie expirado)
+      if (error.status === 401 || error.status === 403) {
         localStorage.removeItem('username');
         if (!window.location.pathname.includes('/login')) {
           window.location.href = '/login';

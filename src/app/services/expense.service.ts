@@ -32,10 +32,20 @@ export class ExpenseService {
     return this.http.get<any>(url);
   }
 
-  uploadExtrato(file: File, contaId: string): Observable<any> {
+  uploadExtrato(file: File, contaId: string, bank: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('contaId', contaId);
-    return this.http.post<any>(`${this.API_URL}/importar-caixa`, formData);
+    
+    const bankKey = bank.toUpperCase();
+    let endpoint = '/importar-caixa';
+    
+    if (bankKey === 'PICPAY') {
+      endpoint = '/importar-picpay';
+    } else if (bankKey === 'NUBANK') {
+      endpoint = '/importar-nubank';
+    }
+    
+    return this.http.post<any>(`${this.API_URL}${endpoint}`, formData);
   }
 }

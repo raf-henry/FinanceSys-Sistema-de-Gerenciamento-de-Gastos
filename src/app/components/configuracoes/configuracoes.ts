@@ -40,7 +40,7 @@ export class Configuracoes {
   confirmEmail = '';
   emailLoading = signal(false);
   emailMessage = signal<{ type: 'success' | 'error'; text: string } | null>(null);
-  
+
   checkingEmail = signal(false);
   emailError = signal<string | null>(null);
 
@@ -125,16 +125,16 @@ export class Configuracoes {
   checkEmailAvailability() {
     this.emailError.set(null);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
     if (!this.newEmail) {
       return;
     }
-    
+
     if (!emailRegex.test(this.newEmail)) {
       this.emailError.set('Formato de e-mail inválido.');
       return;
     }
-    
+
     if (this.newEmail === this.userName) {
       this.emailError.set('Este já é o seu e-mail atual.');
       return;

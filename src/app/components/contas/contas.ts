@@ -22,7 +22,7 @@ export class Contas implements OnInit {
   public sidebarService = inject(SidebarService);
 
   userName = localStorage.getItem('username') || 'Usuário';
-  
+
   expenses = signal<any[]>([]);
   contas = this.contaService.contas;
 
@@ -31,7 +31,7 @@ export class Contas implements OnInit {
     nome: '',
     banco: 'CAIXA',
     tipo: 'Conta Corrente',
-    cor: '',
+    cor: '#005CA9',
     icone: 'account_balance'
   };
 
@@ -42,7 +42,7 @@ export class Contas implements OnInit {
       const gastosDaConta = this.expenses()
         .filter((g: any) => g.conta?.id === conta.id)
         .sort((a: any, b: any) => new Date(b.dataGasto).getTime() - new Date(a.dataGasto).getTime());
-      
+
       if (gastosDaConta.length > 0) {
         total += gastosDaConta[0].saldo || 0;
       }
@@ -56,7 +56,7 @@ export class Contas implements OnInit {
       const gastosDaConta = this.expenses()
         .filter((g: any) => g.conta?.id === conta.id)
         .sort((a: any, b: any) => new Date(b.dataGasto).getTime() - new Date(a.dataGasto).getTime());
-      
+
       return {
         id: conta.id,
         nome: conta.nome,
@@ -86,10 +86,28 @@ export class Contas implements OnInit {
 
   salvarConta() {
     if (this.novaConta.nome) {
+      // Define a cor baseada no banco selecionado
+      switch (this.novaConta.banco) {
+        case 'NUBANK':
+          this.novaConta.cor = '#8A05BE'; // Roxo Nubank
+          break;
+        case 'PICPAY':
+          this.novaConta.cor = '#2EDB6C'; // Verde PicPay
+          break;
+        case 'ITAÚ':
+          this.novaConta.cor = '#FF8200'; // Laranja Itaú
+          break;
+        case 'CAIXA':
+          this.novaConta.cor = '#005CA9'; // Azul Caixa
+          break;
+        default:
+          this.novaConta.cor = '#475569'; // Cinza padrão
+      }
+
       this.contaService.criarConta(this.novaConta).subscribe({
         next: () => {
           this.fecharModal();
-          this.novaConta = { nome: '', banco: 'CAIXA', tipo: 'Conta Corrente', cor: '', icone: 'account_balance' };
+          this.novaConta = { nome: '', banco: 'CAIXA', tipo: 'Conta Corrente', cor: '#005CA9', icone: 'account_balance' };
         }
       });
     }

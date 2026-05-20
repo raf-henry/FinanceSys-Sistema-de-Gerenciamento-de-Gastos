@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -76,6 +77,13 @@ public class GastoController {
                 novoGasto.setValorParcela(payload.getValorParcela() != null ? payload.getValorParcela() : payload.getValor());
             }
 
+            if (payload.getFavorecido() != null) novoGasto.setFavorecido(InputSanitizer.sanitize(payload.getFavorecido()));
+            if (payload.getNrDoc() != null) novoGasto.setNrDoc(InputSanitizer.sanitize(payload.getNrDoc()));
+            if (payload.getCpfCnpj() != null) novoGasto.setCpfCnpj(InputSanitizer.sanitize(payload.getCpfCnpj()));
+            if (payload.getSaldo() != null) novoGasto.setSaldo(payload.getSaldo());
+            if (payload.getCategoria() != null) novoGasto.setCategoria(InputSanitizer.sanitize(payload.getCategoria()));
+            if (payload.getFormaPagamento() != null) novoGasto.setFormaPagamento(InputSanitizer.sanitize(payload.getFormaPagamento()));
+
             if (payload.getContaId() != null) {
                 Long contaId = payload.getContaId();
                 Conta conta = contaRepository.findById(contaId).orElse(null);
@@ -100,16 +108,35 @@ public class GastoController {
     }
 
     @PostMapping("/importar-caixa")
-    public ResponseEntity<?> importarExtratoCaixa(
+    public ResponseEntity<?> importarCaixa(
             @RequestParam("file") MultipartFile file, 
             @RequestParam("contaId") Long contaId,
             @AuthenticationPrincipal UserDetails userDetails) {
+        return processarImportacao(file, contaId, userDetails, "CAIXA");
+    }
+
+    @PostMapping("/importar-picpay")
+    public ResponseEntity<?> importarPicPay(
+            @RequestParam("file") MultipartFile file, 
+            @RequestParam("contaId") Long contaId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return processarImportacao(file, contaId, userDetails, "PICPAY");
+    }
+
+    @PostMapping("/importar-nubank")
+    public ResponseEntity<?> importarNubank(
+            @RequestParam("file") MultipartFile file, 
+            @RequestParam("contaId") Long contaId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return processarImportacao(file, contaId, userDetails, "NUBANK");
+    }
+
+    private ResponseEntity<?> processarImportacao(MultipartFile file, Long contaId, UserDetails userDetails, String banco) {
         try {
             User user = getAuthenticatedUser(userDetails);
             Conta conta = contaRepository.findById(contaId)
                     .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
-            // Verifica se a conta pertence ao usuário autenticado (previne IDOR)
             if (!conta.getUsuario().getId().equals(user.getId())) {
                 return ResponseEntity.status(403).body(Map.of("error", "Acesso negado a esta conta."));
             }
@@ -118,79 +145,101 @@ public class GastoController {
                 return ResponseEntity.badRequest().body(Map.of("error", "Arquivo vazio."));
             }
 
-            // Validação de tipo de arquivo (apenas PDF)
             String contentType = file.getContentType();
             if (contentType == null || !contentType.equals("application/pdf")) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Apenas arquivos PDF são aceitos."));
             }
 
-            // Validação de tamanho (máximo 10MB)
-            long maxSize = 10 * 1024 * 1024; // 10MB
-            if (file.getSize() > maxSize) {
+            if (file.getSize() > 10 * 1024 * 1024) {
                 return ResponseEntity.badRequest().body(Map.of("error", "O arquivo excede o tamanho máximo de 10MB."));
             }
 
-            // Envia o PDF para o GeminiService
-            List<Map<String, Object>> gastosExtraidos = geminiService.processarExtratoCaixa(file.getBytes());
-            int salvos = 0;
+            List<Map<String, Object>> gastosExtraidos;
+            if ("PICPAY".equalsIgnoreCase(banco)) {
+                gastosExtraidos = geminiService.processarExtratoPicPay(file.getBytes());
+            } else if ("NUBANK".equalsIgnoreCase(banco)) {
+                gastosExtraidos = geminiService.processarExtratoNubank(file.getBytes());
+            } else {
+                gastosExtraidos = geminiService.processarExtratoCaixa(file.getBytes());
+            }
 
+            int salvos = 0;
             for (Map<String, Object> dado : gastosExtraidos) {
                 Gasto novoGasto = new Gasto();
                 novoGasto.setUsuario(user);
                 novoGasto.setConta(conta);
-                novoGasto.setDescricao(InputSanitizer.sanitize((String) dado.get("descricao")));
                 
+                String descricao = (String) dado.getOrDefault("descricao", dado.get("tituloExibicao"));
+                novoGasto.setDescricao(InputSanitizer.sanitize(descricao));
+                
+                String favorecido = (String) dado.getOrDefault("favorecido", dado.get("nomeContraparte"));
+                novoGasto.setFavorecido(InputSanitizer.sanitize(favorecido));
+
                 if (dado.containsKey("tipo")) {
                     novoGasto.setTipo(InputSanitizer.sanitize((String) dado.get("tipo")));
+                } else if (dado.containsKey("tipoMovimentacao")) {
+                    String tipoMov = (String) dado.get("tipoMovimentacao");
+                    novoGasto.setTipo("ENTRADA".equals(tipoMov) || "RENDIMENTO".equals(tipoMov) ? "RECEITA" : "DESPESA");
                 }
-                if (dado.containsKey("nrDoc")) {
-                    novoGasto.setNrDoc(InputSanitizer.sanitize((String) dado.get("nrDoc")));
-                }
-                if (dado.containsKey("favorecido")) {
-                    novoGasto.setFavorecido(InputSanitizer.sanitize((String) dado.get("favorecido")));
-                }
-                if (dado.containsKey("cpfCnpj")) {
-                    novoGasto.setCpfCnpj(InputSanitizer.sanitize((String) dado.get("cpfCnpj")));
-                }
+
                 if (dado.containsKey("categoria")) {
                     novoGasto.setCategoria(InputSanitizer.sanitize((String) dado.get("categoria")));
                 } else {
                     novoGasto.setCategoria("Outros");
                 }
+
+                if (dado.containsKey("formaPagamento")) {
+                    novoGasto.setFormaPagamento(InputSanitizer.sanitize((String) dado.get("formaPagamento")));
+                }
+
+                if (dado.containsKey("nrDoc")) {
+                    novoGasto.setNrDoc(InputSanitizer.sanitize((String) dado.get("nrDoc")));
+                }
+
+                if (dado.containsKey("cpfCnpj")) {
+                    novoGasto.setCpfCnpj(InputSanitizer.sanitize((String) dado.get("cpfCnpj")));
+                }
+
                 if (dado.containsKey("saldo") && dado.get("saldo") != null) {
                     try {
                         novoGasto.setSaldo(Double.parseDouble(dado.get("saldo").toString()));
                     } catch (Exception ignored) {}
                 }
                 
-                // Converte o valor de forma segura
                 Object valorObj = dado.get("valor");
                 if (valorObj instanceof Number) {
-                    novoGasto.setValor(((Number) valorObj).doubleValue());
+                    novoGasto.setValor(Math.abs(((Number) valorObj).doubleValue()));
                 } else if (valorObj instanceof String) {
-                    novoGasto.setValor(Double.parseDouble(valorObj.toString().replace(",", ".")));
+                    novoGasto.setValor(Math.abs(Double.parseDouble(valorObj.toString().replace(",", "."))));
                 }
 
-                // Trata a data (espera ISO-8601)
                 if (dado.containsKey("dataGasto") && dado.get("dataGasto") != null) {
+                    String dateStr = dado.get("dataGasto").toString();
                     try {
-                        novoGasto.setDataGasto(LocalDateTime.parse(dado.get("dataGasto").toString()));
-                    } catch (Exception e) {
-                        novoGasto.setDataGasto(LocalDateTime.now());
+                        novoGasto.setDataGasto(LocalDateTime.parse(dateStr));
+                    } catch (Exception e1) {
+                        try {
+                            novoGasto.setDataGasto(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay());
+                        } catch (Exception e2) {
+                            try {
+                                novoGasto.setDataGasto(LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay());
+                            } catch (Exception e3) {
+                                novoGasto.setDataGasto(LocalDateTime.now());
+                            }
+                        }
                     }
                 } else {
                     novoGasto.setDataGasto(LocalDateTime.now());
                 }
 
-                novoGasto.setStatus("Pago"); // Extrato de conta sempre indica que já foi pago
+                novoGasto.setStatus("Pago");
                 gastoRepository.save(novoGasto);
                 salvos++;
             }
 
-            return ResponseEntity.ok(Map.of("message", "Extrato processado com sucesso!", "lidos", salvos));
-
+            return ResponseEntity.ok(Map.of("message", "Importação concluída", "count", salvos));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "Falha ao processar o extrato."));
+            return ResponseEntity.status(500).body(Map.of("error", "Falha ao processar extrato: " + e.getMessage()));
         }
     }
 
@@ -238,6 +287,24 @@ public class GastoController {
                 }
                 if (payload.containsKey("valorParcela")) {
                     gasto.setValorParcela(Double.parseDouble(payload.get("valorParcela").toString()));
+                }
+                if (payload.containsKey("favorecido")) {
+                    gasto.setFavorecido(InputSanitizer.sanitize((String) payload.get("favorecido")));
+                }
+                if (payload.containsKey("nrDoc")) {
+                    gasto.setNrDoc(InputSanitizer.sanitize((String) payload.get("nrDoc")));
+                }
+                if (payload.containsKey("cpfCnpj")) {
+                    gasto.setCpfCnpj(InputSanitizer.sanitize((String) payload.get("cpfCnpj")));
+                }
+                if (payload.containsKey("saldo")) {
+                    gasto.setSaldo(Double.parseDouble(payload.get("saldo").toString()));
+                }
+                if (payload.containsKey("categoria")) {
+                    gasto.setCategoria(InputSanitizer.sanitize((String) payload.get("categoria")));
+                }
+                if (payload.containsKey("formaPagamento")) {
+                    gasto.setFormaPagamento(InputSanitizer.sanitize((String) payload.get("formaPagamento")));
                 }
                 return ResponseEntity.ok(gastoRepository.save(gasto));
             }).orElse(ResponseEntity.notFound().build());

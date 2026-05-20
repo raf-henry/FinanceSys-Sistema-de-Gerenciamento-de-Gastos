@@ -3,6 +3,7 @@ package com.projetopessoal.projeto.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "gastos")
@@ -40,6 +41,7 @@ public class Gasto {
     private String favorecido;
     private String cpfCnpj;
     private Double saldo;
+    private String formaPagamento; // Pix, Crédito, Débito, etc.
 
     @ManyToOne
     @JoinColumn(name = "conta_id")
@@ -48,4 +50,9 @@ public class Gasto {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User usuario;
+
+    @JsonProperty("contaId")
+    public Long getContaId() {
+        return conta != null ? conta.getId() : null;
+    }
 }

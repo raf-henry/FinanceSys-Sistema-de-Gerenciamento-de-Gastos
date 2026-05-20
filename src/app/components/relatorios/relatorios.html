@@ -1,0 +1,575 @@
+<div class="flex min-h-screen text-on-surface bg-background">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" [class.w-64]="!sidebarService.isCollapsed()" [class.w-20]="sidebarService.isCollapsed()"
+    class="bg-surface-container-lowest flex-shrink-0 transition-[width] duration-300 ease-in-out flex flex-col z-20 sticky top-0 h-screen overflow-hidden border-r border-outline-variant/30">
+
+    <div class="h-[73px] flex items-center border-b border-outline-variant/30 transition-all duration-300"
+      [class.justify-between]="!sidebarService.isCollapsed()" [class.justify-center]="sidebarService.isCollapsed()"
+      [class.px-4]="!sidebarService.isCollapsed()">
+
+      <!-- Logo section when expanded -->
+      <div class="flex items-center gap-2 overflow-hidden transition-all duration-300"
+        [class.opacity-0]="sidebarService.isCollapsed()" [class.w-0]="sidebarService.isCollapsed()">
+        <span class="material-symbols-outlined text-primary flex-shrink-0">account_balance</span>
+        <span class="text-xl font-bold tracking-tight whitespace-nowrap text-on-surface">FinanceSys</span>
+      </div>
+
+      <!-- Toggle Button (Centralized when collapsed) -->
+      <button (click)="toggleSidebar()"
+        class="p-3 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors flex items-center justify-center">
+        <span class="material-symbols-outlined">{{ sidebarService.isCollapsed() ? 'menu' : 'menu_open' }}</span>
+      </button>
+    </div>
+
+    <nav class="flex-1 py-6 flex flex-col gap-2 px-3 overflow-y-auto custom-scrollbar">
+      <a routerLink="/home"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">dashboard</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Dashboard</span>
+      </a>
+
+      <a routerLink="/contas"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">account_balance_wallet</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Contas</span>
+      </a>
+
+      <a routerLink="/transacoes"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">receipt_long</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Transações</span>
+      </a>
+
+      <div
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">pie_chart</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Orçamentos</span>
+      </div>
+
+      <a routerLink="/relatorios"
+        class="flex items-center gap-4 py-3 px-4 rounded-full bg-secondary-container text-on-secondary-container font-medium transition-all duration-300"
+        [class.justify-start]="true">
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">analytics</span>
+        <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
+          [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+          [class.ml-[-8px]]="sidebarService.isCollapsed()">Relatórios</span>
+      </a>
+
+      <!-- Bottom Actions -->
+      <div class="mt-auto pt-6 flex flex-col gap-2 border-t border-outline-variant/30">
+        <a routerLink="/configuracoes"
+          class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container w-full"
+          [class.justify-start]="true">
+          <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">settings</span>
+          <span class="whitespace-nowrap overflow-hidden transition-all duration-300 text-left"
+            [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+            [class.ml-[-8px]]="sidebarService.isCollapsed()">Configurações</span>
+        </a>
+
+        <button (click)="logout()"
+          class="flex items-center gap-4 py-3 px-4 rounded-full text-error font-medium transition-all duration-300 hover:bg-error-container/20 w-full">
+          <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">logout</span>
+          <span class="whitespace-nowrap overflow-hidden transition-all duration-300 text-left"
+            [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
+            [class.ml-[-8px]]="sidebarService.isCollapsed()">Sair</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- HEADER -->
+    <header
+      class="bg-surface-container-lowest border-b border-outline-variant/30 px-6 py-4 flex justify-between items-center sticky top-0 z-50 h-[73px]">
+      <div class="flex items-center">
+        <h2 class="text-xl font-bold tracking-tight text-on-surface">Relatórios</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="relative hidden sm:block">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+          <input [ngModel]="searchText()" (ngModelChange)="searchText.set($event)"
+            class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary outline-none"
+            placeholder="Buscar..." type="text" />
+        </div>
+        <button class="p-2 hover:bg-surface-container-low rounded-full transition-transform active:scale-95">
+          <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+        </button>
+        <div class="flex items-center gap-4">
+          <div class="flex flex-col items-end">
+            <span class="text-sm font-bold text-on-surface">{{ userName }}</span>
+          </div>
+          <div
+            class="w-10 h-10 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary font-black animate-fade-in shadow-sm select-none">
+            {{ userName.charAt(0).toUpperCase() }}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="flex-1 p-6 md:p-8 overflow-y-auto w-full animate-fade-in">
+      <div class="max-w-7xl mx-auto">
+        <!-- Error Banner -->
+        @if (error(); as errorMessage) {
+        <div
+          class="mb-6 p-4 bg-error-container/20 border border-error/30 text-error rounded-2xl flex items-center justify-between gap-4 animate-fade-in shadow-sm animate-shake">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-error">error</span>
+            <p class="text-sm font-semibold">{{ errorMessage }}</p>
+          </div>
+          <button (click)="retryLoad()"
+            class="px-5 py-2 bg-error text-on-error hover:bg-error/90 text-xs font-bold rounded-full transition-all active:scale-95 shadow-sm">
+            Tentar Novamente
+          </button>
+        </div>
+        }
+
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 animate-slide-up">
+          <div>
+            <h2 class="text-3xl font-bold text-primary tracking-tight">Análise Financeira</h2>
+            <p class="text-on-surface-variant text-base mt-1">Acompanhamento detalhado do seu desempenho e evolução do
+              patrimônio.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select [(ngModel)]="contaSelecionadaId" (change)="loadTransacoes()"
+              class="px-5 py-2.5 bg-white border border-outline-variant/50 rounded-full text-sm font-semibold text-on-surface hover:bg-surface-container hover:shadow-sm transition-all outline-none appearance-none cursor-pointer hidden md:block">
+              <option [ngValue]="null">Todas as Contas</option>
+              @for (conta of contas(); track conta.id) {
+              <option [ngValue]="conta.id">{{ conta.nome }} ({{ conta.banco }})</option>
+              }
+            </select>
+            <div class="relative">
+              <select [ngModel]="periodoFiltro()" (ngModelChange)="periodoFiltro.set($event)"
+                class="pl-5 pr-10 py-2.5 bg-white border border-outline-variant/50 rounded-full text-sm font-semibold text-on-surface hover:bg-surface-container hover:shadow-sm transition-all outline-none appearance-none cursor-pointer">
+                @for (p of periodos; track p) {
+                <option [value]="p">{{ p }}</option>
+                }
+              </select>
+              <span
+                class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[18px]">expand_more</span>
+            </div>
+            <button
+              class="p-2.5 bg-primary text-on-primary rounded-full hover:bg-primary/90 shadow-md shadow-primary/20 transition-all active:scale-95">
+              <span class="material-symbols-outlined">download</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Summary Cards Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 stagger-1 animate-slide-up">
+          <!-- Total Receitas -->
+          <div
+            class="bg-white p-6 rounded-2xl border border-outline-variant/50 premium-shadow hover-lift flex flex-col gap-4 group">
+            <div class="flex items-center justify-between">
+              <span
+                class="p-2 bg-secondary-container/20 text-on-secondary-container rounded-full material-symbols-outlined group-hover:scale-110 transition-transform">trending_up</span>
+            </div>
+            <p class="text-on-surface-variant text-sm font-semibold uppercase tracking-widest">Total de Receitas</p>
+            @if (loading() && !transacoes().length) {
+            <div class="h-9 w-32 bg-slate-200 rounded animate-pulse"></div>
+            } @else {
+            <h3 class="text-3xl font-black text-primary tracking-tight">R$ {{ totalEntradas() | number:'1.2-2' }}</h3>
+            }
+          </div>
+          <!-- Total Despesas -->
+          <div
+            class="bg-white p-6 rounded-2xl border border-outline-variant/50 premium-shadow hover-lift flex flex-col gap-4 group">
+            <div class="flex items-center justify-between">
+              <span
+                class="p-2 bg-error-container/30 text-error rounded-full material-symbols-outlined group-hover:scale-110 transition-transform">trending_down</span>
+            </div>
+            <p class="text-on-surface-variant text-sm font-semibold uppercase tracking-widest">Total de Despesas</p>
+            @if (loading() && !transacoes().length) {
+            <div class="h-9 w-32 bg-slate-200 rounded animate-pulse"></div>
+            } @else {
+            <h3 class="text-3xl font-black text-error tracking-tight">R$ {{ totalSaidas() | number:'1.2-2' }}</h3>
+            }
+          </div>
+          <div
+            class="bg-white p-6 rounded-2xl border border-outline-variant/50 border-l-4 border-l-[#10B981] premium-shadow hover-lift flex flex-col gap-4 group">
+            <div class="flex items-center justify-between">
+              <span
+                class="p-2 bg-surface-container-high text-primary rounded-full material-symbols-outlined group-hover:scale-110 transition-transform">payments</span>
+            </div>
+            <p class="text-on-surface-variant text-sm font-semibold uppercase tracking-widest">Saldo Líquido</p>
+            @if (loading() && !transacoes().length) {
+            <div class="h-9 w-32 bg-slate-200 rounded animate-pulse"></div>
+            } @else {
+            <h3 class="text-3xl font-black tracking-tight"
+              [ngClass]="saldoLiquido() >= 0 ? 'text-primary' : 'text-error'">R$ {{ saldoLiquido() | number:'1.2-2' }}
+            </h3>
+            }
+          </div>
+        </section>
+
+        <!-- Charts Bento Layout -->
+        @defer (on viewport) {
+        <section class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10 stagger-2 animate-slide-up">
+          <!-- Main Chart Card -->
+          <div class="lg:col-span-3 bg-white p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
+            <div class="flex items-center justify-between mb-8">
+              <h4 class="text-xl font-bold text-primary tracking-tight">Receitas vs Despesas</h4>
+              <div class="flex gap-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-[#10B981]"></div>
+                  <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Receitas</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-[#EF4444]"></div>
+                  <span class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Despesas</span>
+                </div>
+              </div>
+            </div>
+
+            @if (loading() && !transacoes().length) {
+            <div class="h-64 w-full flex flex-col justify-center items-center gap-4 bg-slate-50 rounded-xl">
+              <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <span class="text-sm text-on-surface-variant animate-pulse font-medium">Carregando dados do
+                gráfico...</span>
+            </div>
+            } @else {
+            <div class="h-64 w-full flex justify-center items-center overflow-hidden pt-6">
+              <canvas baseChart [data]="chartData()" [options]="chartOptions" [type]="'bar'">
+              </canvas>
+            </div>
+            }
+          </div>
+          <!-- Stats Highlight -->
+          <div
+            class="lg:col-span-1 bg-primary text-on-primary p-8 rounded-2xl shadow-xl shadow-primary/10 flex flex-col justify-between overflow-hidden relative group">
+            @if (loading() && !transacoes().length) {
+            <div class="relative z-10 space-y-4 animate-pulse">
+              <div class="h-4 bg-white/20 rounded w-1/3"></div>
+              <div class="h-8 bg-white/20 rounded w-3/4"></div>
+              <div class="h-2 bg-white/20 rounded-full"></div>
+              <div class="h-4 bg-white/20 rounded w-5/6"></div>
+            </div>
+            } @else {
+            <div class="relative z-10">
+              <p class="text-xs font-semibold text-primary-fixed mb-2 uppercase tracking-widest text-on-primary/70">Meta
+                de Economia</p>
+              <h4 class="text-2xl font-black mb-6 tracking-tight">{{ metaEconomiaPorcentagem() }}% Atingido</h4>
+              <div class="w-full bg-white/10 h-2 rounded-full mb-3">
+                <div class="bg-[#10B981] h-full rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                  [style.width.%]="metaEconomiaPorcentagem()"></div>
+              </div>
+              <p class="text-sm text-white/70 font-medium leading-relaxed">Faltam <strong class="text-white">R$ {{
+                  faltaParaMeta() | number:'1.2-2' }}</strong> para bater a meta (R$ 5.000).</p>
+            </div>
+            }
+            <div class="relative z-10 mt-6">
+              <button
+                class="w-full py-2.5 bg-white text-primary rounded-xl text-sm font-bold hover:bg-surface-container transition-all active:scale-95 shadow-md">Ver
+                Detalhes</button>
+            </div>
+            <!-- Abstract Design Background -->
+            <div
+              class="absolute -right-10 -bottom-10 w-48 h-48 bg-secondary/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700">
+            </div>
+            <div
+              class="absolute -left-10 top-0 w-32 h-32 bg-tertiary/20 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700 delay-100">
+            </div>
+          </div>
+        </section>
+        } @placeholder {
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
+          <div class="lg:col-span-3 bg-white p-8 rounded-2xl h-80 border border-outline-variant/50 animate-pulse"></div>
+          <div class="lg:col-span-1 bg-primary/10 p-8 rounded-2xl h-80 animate-pulse"></div>
+        </div>
+        }
+
+        <!-- Detailed Report Table -->
+        @defer (on viewport) {
+        <section
+          class="bg-white rounded-2xl border border-outline-variant/50 premium-shadow overflow-hidden stagger-3 animate-slide-up">
+          <div
+            class="px-8 py-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low/50">
+            <h4 class="text-xl font-bold text-primary tracking-tight">Relatório Detalhado</h4>
+            <div class="flex items-center gap-4">
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                <input [ngModel]="searchText()" (ngModelChange)="searchText.set($event)"
+                  class="pl-11 pr-4 py-2 bg-white border border-outline-variant/50 rounded-full text-sm w-48 lg:w-64 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                  placeholder="Filtrar lançamentos..." type="text" />
+              </div>
+            </div>
+          </div>
+
+          @if (loading() && !transacoes().length) {
+          <!-- Skeleton para as linhas da tabela -->
+          <div class="divide-y divide-outline-variant/20 p-6 animate-pulse space-y-4">
+            @for (item of [1, 2, 3, 4, 5]; track item) {
+            <div class="flex items-center justify-between py-2">
+              <div class="h-5 bg-slate-200 rounded w-24"></div>
+              <div class="h-5 bg-slate-200 rounded w-48"></div>
+              <div class="h-5 bg-slate-200 rounded w-16"></div>
+              <div class="h-5 bg-slate-200 rounded w-20"></div>
+            </div>
+            }
+          </div>
+          } @else {
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-outline-variant">
+              <!-- HEADERS -->
+              @if (currentBank === 'CAIXA') {
+              <thead class="bg-surface-container/50">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Lançamentos</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Nr. Doc</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Histórico/Complemento</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Favorecido</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    CPF/CNPJ</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Saldo (R$)</th>
+                </tr>
+              </thead>
+              } @else if (currentBank === 'PICPAY') {
+              <thead class="bg-surface-container/50">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Data/Hora</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Tipo</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Descrição</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Favorecido</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Forma de Pagamento</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                </tr>
+              </thead>
+              } @else if (currentBank === 'NUBANK') {
+              <thead class="bg-surface-container/50">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Data</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Título</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Contraparte</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Categoria / Forma</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Valor (R$)</th>
+                </tr>
+              </thead>
+              } @else {
+              <thead class="bg-surface-container/50">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    ID</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    DESCRIÇÃO</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    FAVORECIDO</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    CATEGORIA</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    Nº DOC</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    DATA</th>
+                  <th
+                    class="px-6 py-4 text-left text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    STATUS</th>
+                  <th
+                    class="px-6 py-4 text-right text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                    VALOR (R$)</th>
+                </tr>
+              </thead>
+              }
+
+              <tbody class="divide-y divide-outline-variant/50">
+                @for (t of transacoesFiltradasPeriodo(); track t.id) {
+                <tr class="hover:bg-surface-container-low transition-colors">
+                  <!-- CAIXA ROWS -->
+                  @if (currentBank === 'CAIXA') {
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                    date:'dd/MM/yyyy' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.nrDoc || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.descricao }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.favorecido || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.cpfCnpj || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                    [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
+                    {{ t.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right text-on-surface">
+                    R$ {{ t.saldo | number:'1.2-2' }}
+                  </td>
+                  }
+
+                  <!-- PICPAY ROWS -->
+                  @else if (currentBank === 'PICPAY') {
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                    date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      [ngClass]="t.tipo === 'RECEITA' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                      {{ t.tipo }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.descricao }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.favorecido || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.formaPagamento || 'Saldo
+                    PicPay' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                    [ngClass]="t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : 'text-error'">
+                    {{ t.tipo === 'RECEITA' ? '+' : '-' }} R$ {{ t.valor | number:'1.2-2' }}
+                  </td>
+                  }
+
+                  <!-- NUBANK ROWS -->
+                  @else if (currentBank === 'NUBANK') {
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                    date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">{{ t.descricao }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                    {{ t.favorecido || '-' }}
+                    <div class="text-[10px] text-on-surface-variant/60">{{ t.instituicaoContraparte }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                    <span
+                      class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 mr-1 uppercase">{{
+                      t.categoria }}</span>
+                    <span class="text-[10px] font-medium text-on-surface-variant/70">{{ t.formaPagamento }}</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                    [ngClass]="t.tipo === 'ENTRADA' || t.tipo === 'RECEITA' ? 'text-[#0a7a3b]' : (t.tipo === 'RENDIMENTO' ? 'text-primary' : 'text-error')">
+                    {{ t.tipo === 'ENTRADA' || t.tipo === 'RECEITA' || t.tipo === 'RENDIMENTO' ? '+' : '-' }} R$ {{
+                    t.valor | number:'1.2-2' }}
+                  </td>
+                  }
+
+                  <!-- DEFAULT ROWS -->
+                  @else {
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">#{{ t.id }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-on-surface">
+                    {{ t.descricao }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                    @if (t.favorecido) {
+                    <div class="font-bold text-on-surface text-xs uppercase tracking-tight">
+                      {{ t.favorecido }}
+                    </div>
+                    }
+                    @if (t.cpfCnpj) {
+                    <div class="text-[10px] opacity-60">
+                      {{ t.cpfCnpj }}
+                    </div>
+                    }
+                    @if (!t.favorecido && !t.cpfCnpj) {
+                    <span>-</span>
+                    }
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">
+                    <span
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container border border-outline-variant">
+                      {{ t.categoria || 'Outros' }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.nrDoc || '-' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-on-surface-variant">{{ t.dataGasto |
+                    date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      [ngClass]="t.tipo === 'RECEITA' || t.tipo === 'ENTRADA' || t.tipo === 'RENDIMENTO' ? 'bg-secondary-container/50 text-[#0a7a3b]' : 'bg-error-container/50 text-error'"
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                      {{ t.tipo === 'RECEITA' || t.tipo === 'ENTRADA' || t.tipo === 'RENDIMENTO' ? 'Recebido' :
+                      (t.status === 'Parcelado' ? 'Parcelado' : 'Pago') }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-right"
+                    [ngClass]="t.tipo === 'RECEITA' || t.tipo === 'ENTRADA' || t.tipo === 'RENDIMENTO' ? 'text-[#0a7a3b]' : 'text-error'">
+                    {{ t.tipo === 'RECEITA' || t.tipo === 'ENTRADA' || t.tipo === 'RENDIMENTO' ? '+' : '-' }} R$ {{
+                    t.valor | number:'1.2-2' }}
+                  </td>
+                  }
+                </tr>
+                } @empty {
+                <tr>
+                  <td
+                    [attr.colspan]="currentBank === 'CAIXA' ? 7 : (currentBank === 'PICPAY' ? 6 : (currentBank === 'NUBANK' ? 5 : 8))"
+                    class="px-6 py-16 text-center">
+                    <div class="flex flex-col items-center justify-center gap-3">
+                      <span class="material-symbols-outlined text-4xl text-on-surface-variant/40">folder_open</span>
+                      <p class="text-lg font-bold text-on-surface">Nenhum lançamento encontrado</p>
+                      <p class="text-sm text-on-surface-variant max-w-sm mx-auto">Não há lançamentos cadastrados nesta
+                        conta ou período para os critérios selecionados.</p>
+                    </div>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="px-8 py-4 bg-surface-container-lowest border-t border-outline-variant/30 flex justify-center">
+            <button [disabled]="loading()" (click)="loadTransacoes()"
+              class="text-sm font-bold text-primary hover:text-primary/70 transition-colors flex items-center gap-1 disabled:opacity-50">
+              @if (loading()) {
+              <span class="material-symbols-outlined text-[18px] animate-spin">autorenew</span>
+              Atualizando...
+              } @else {
+              <span class="material-symbols-outlined text-[18px]">autorenew</span>
+              Carregar mais lançamentos
+              }
+            </button>
+          </div>
+          }
+        </section>
+        } @placeholder {
+        <div class="bg-white rounded-2xl h-96 border border-outline-variant/50 animate-pulse"></div>
+        }
+      </div>
+    </main>
+  </div>
+</div>

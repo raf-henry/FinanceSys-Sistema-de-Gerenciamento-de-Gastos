@@ -47,7 +47,8 @@
           [class.ml-[-8px]]="sidebarService.isCollapsed()">Transações</span>
       </a>
 
-      <div class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
+      <div
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
         [class.justify-start]="true">
         <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">pie_chart</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
@@ -55,13 +56,14 @@
           [class.ml-[-8px]]="sidebarService.isCollapsed()">Orçamentos</span>
       </div>
 
-      <div class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant/40 font-medium cursor-not-allowed"
+      <a routerLink="/relatorios"
+        class="flex items-center gap-4 py-3 px-4 rounded-full text-on-surface-variant font-medium transition-all duration-300 hover:bg-surface-container"
         [class.justify-start]="true">
-        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">bar_chart</span>
+        <span class="material-symbols-outlined flex-shrink-0 w-6 flex justify-center">analytics</span>
         <span class="whitespace-nowrap overflow-hidden transition-all duration-300"
           [class.w-0]="sidebarService.isCollapsed()" [class.opacity-0]="sidebarService.isCollapsed()"
           [class.ml-[-8px]]="sidebarService.isCollapsed()">Relatórios</span>
-      </div>
+      </a>
 
       <!-- Bottom Actions -->
       <div class="mt-auto pt-6 flex flex-col gap-2 border-t border-outline-variant/30">
@@ -88,7 +90,8 @@
   <!-- MAIN AREA -->
   <div class="flex-1 flex flex-col min-w-0">
     <!-- HEADER -->
-    <header class="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex justify-between items-center sticky top-0 z-10 h-[73px]">
+    <header
+      class="bg-surface-container-lowest border-b border-outline-variant px-6 py-4 flex justify-between items-center sticky top-0 z-10 h-[73px]">
       <div class="flex items-center gap-3">
         <!-- Back button removed as forms are now visible on the main page -->
         <h2 class="text-xl font-bold tracking-tight text-on-surface">Configurações</h2>
@@ -104,7 +107,7 @@
     <!-- CONTENT -->
     <main class="flex-1 overflow-y-auto bg-background p-6 md:p-8 lg:p-16">
       <div class="max-w-7xl mx-auto space-y-6 px-4 sm:px-6 lg:px-8">
-        
+
         <!-- Page Title matching the provided prompt -->
         <header class="mb-10">
           <h2 class="text-4xl font-bold text-on-surface">Configurações</h2>
@@ -115,40 +118,54 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           <!-- Change Password Card -->
-          <div class="bg-surface-container-lowest rounded-[32px] p-8 shadow-[0px_8px_30px_rgba(0,0,0,0.04)] border border-outline-variant/20 flex flex-col h-full">
+          <div
+            class="bg-surface-container-lowest rounded-[32px] p-8 shadow-[0px_8px_30px_rgba(0,0,0,0.04)] border border-outline-variant/20 flex flex-col h-full">
             <div class="mb-6">
               <h3 class="text-2xl font-semibold text-on-surface flex items-center gap-2">
                 <span class="material-symbols-outlined text-on-surface-variant">lock</span>
                 Trocar Senha
               </h3>
-              <p class="text-base text-on-surface-variant mt-1">Mantenha sua conta segura atualizando sua senha regularmente.</p>
+              <p class="text-base text-on-surface-variant mt-1">Mantenha sua conta segura atualizando sua senha
+                regularmente.</p>
             </div>
-            
+
             <div *ngIf="passwordMessage()" class="p-4 rounded-xl text-sm font-medium flex items-center gap-3 mb-4"
-                 [ngClass]="passwordMessage()?.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'">
-              <span class="material-symbols-outlined text-[20px]">{{ passwordMessage()?.type === 'success' ? 'check_circle' : 'error' }}</span>
+              [ngClass]="passwordMessage()?.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'">
+              <span class="material-symbols-outlined text-[20px]">{{ passwordMessage()?.type === 'success' ?
+                'check_circle' : 'error' }}</span>
               {{ passwordMessage()?.text }}
             </div>
 
             <form class="space-y-6 flex-1 flex flex-col">
               <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="current-password">Senha Atual</label>
-                <input class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                       id="current-password" placeholder="••••••••" type="password" [(ngModel)]="currentPasswordForPw" name="currentPasswordForPw"/>
+                <label class="block text-sm font-semibold text-on-surface mb-1" for="current-password">Senha
+                  Atual</label>
+                <input
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                  id="current-password" placeholder="••••••••" type="password" [(ngModel)]="currentPasswordForPw"
+                  name="currentPasswordForPw" />
               </div>
               <div>
                 <label class="block text-sm font-semibold text-on-surface mb-1" for="new-password">Nova Senha</label>
-                <input class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                       id="new-password" placeholder="Nova senha segura" type="password" [(ngModel)]="newPassword" name="newPassword"/>
+                <input
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                  id="new-password" placeholder="Nova senha segura" type="password" [(ngModel)]="newPassword"
+                  name="newPassword" />
               </div>
               <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="confirm-password">Confirmar Nova Senha</label>
-                <input class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                       id="confirm-password" placeholder="Repita a nova senha" type="password" [(ngModel)]="confirmPassword" name="confirmPassword"/>
+                <label class="block text-sm font-semibold text-on-surface mb-1" for="confirm-password">Confirmar Nova
+                  Senha</label>
+                <input
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                  id="confirm-password" placeholder="Repita a nova senha" type="password" [(ngModel)]="confirmPassword"
+                  name="confirmPassword" />
               </div>
               <div class="mt-auto pt-6">
-                <button (click)="changePassword()" [disabled]="passwordLoading()" class="w-full h-12 bg-primary text-on-primary rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" type="button">
-                  <span *ngIf="passwordLoading()" class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
+                <button (click)="changePassword()" [disabled]="passwordLoading()"
+                  class="w-full h-12 bg-primary text-on-primary rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button">
+                  <span *ngIf="passwordLoading()"
+                    class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
                   <span *ngIf="!passwordLoading()" class="material-symbols-outlined text-[20px]">save</span>
                   {{ passwordLoading() ? 'Salvando...' : 'Salvar Alterações' }}
                 </button>
@@ -157,7 +174,8 @@
           </div>
 
           <!-- Change Email Card -->
-          <div class="bg-surface-container-lowest rounded-[32px] p-8 shadow-[0px_8px_30px_rgba(0,0,0,0.04)] border border-outline-variant/20 flex flex-col h-full">
+          <div
+            class="bg-surface-container-lowest rounded-[32px] p-8 shadow-[0px_8px_30px_rgba(0,0,0,0.04)] border border-outline-variant/20 flex flex-col h-full">
             <div class="mb-6">
               <h3 class="text-2xl font-semibold text-on-surface flex items-center gap-2">
                 <span class="material-symbols-outlined text-on-surface-variant">mail</span>
@@ -165,54 +183,70 @@
               </h3>
               <p class="text-base text-on-surface-variant mt-1">Atualize o endereço de email associado à sua conta.</p>
             </div>
-            
+
             <div *ngIf="emailMessage()" class="p-4 rounded-xl text-sm font-medium flex items-center gap-3 mb-4"
-                 [ngClass]="emailMessage()?.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'">
-              <span class="material-symbols-outlined text-[20px]">{{ emailMessage()?.type === 'success' ? 'check_circle' : 'error' }}</span>
+              [ngClass]="emailMessage()?.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'">
+              <span class="material-symbols-outlined text-[20px]">{{ emailMessage()?.type === 'success' ? 'check_circle'
+                : 'error' }}</span>
               {{ emailMessage()?.text }}
             </div>
 
             <form class="space-y-6 flex-1 flex flex-col">
               <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="current-email-display">Email Atual</label>
-                <div class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface-variant/50 flex items-center text-base text-on-surface-variant cursor-not-allowed">
+                <label class="block text-sm font-semibold text-on-surface mb-1" for="current-email-display">Email
+                  Atual</label>
+                <div
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface-variant/50 flex items-center text-base text-on-surface-variant cursor-not-allowed">
                   {{ userName }}
                 </div>
               </div>
-              
+
               <!-- Added Current Password field for security verification (Required by Backend) -->
               <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="email-current-password">Senha Atual</label>
-                <input class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                       id="email-current-password" placeholder="Confirme sua identidade" type="password" [(ngModel)]="currentPasswordForEmail" name="currentPasswordForEmail"/>
+                <label class="block text-sm font-semibold text-on-surface mb-1" for="email-current-password">Senha
+                  Atual</label>
+                <input
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                  id="email-current-password" placeholder="Confirme sua identidade" type="password"
+                  [(ngModel)]="currentPasswordForEmail" name="currentPasswordForEmail" />
               </div>
 
               <div>
                 <label class="block text-sm font-semibold text-on-surface mb-1" for="new-email">Novo Email</label>
                 <div>
-                  <input class="w-full h-12 px-4 rounded-full border bg-surface outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                         [ngClass]="emailError() ? 'border-error focus:border-error focus:ring-1 focus:ring-error text-error' : 'border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary'"
-                         id="new-email" placeholder="novo@email.com" type="email" [(ngModel)]="newEmail" name="newEmail"
-                         (blur)="checkEmailAvailability()"/>
-                  <div *ngIf="checkingEmail() || emailError()" class="flex items-center gap-2 mt-1 ml-4 animate-fade-up">
-                    <span *ngIf="checkingEmail()" class="material-symbols-outlined text-primary text-[18px] animate-spin">progress_activity</span>
-                    <span *ngIf="checkingEmail()" class="text-xs text-primary font-medium">Verificando disponibilidade...</span>
+                  <input
+                    class="w-full h-12 px-4 rounded-full border bg-surface outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                    [ngClass]="emailError() ? 'border-error focus:border-error focus:ring-1 focus:ring-error text-error' : 'border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary'"
+                    id="new-email" placeholder="novo@email.com" type="email" [(ngModel)]="newEmail" name="newEmail"
+                    (blur)="checkEmailAvailability()" />
+                  <div *ngIf="checkingEmail() || emailError()"
+                    class="flex items-center gap-2 mt-1 ml-4 animate-fade-up">
+                    <span *ngIf="checkingEmail()"
+                      class="material-symbols-outlined text-primary text-[18px] animate-spin">progress_activity</span>
+                    <span *ngIf="checkingEmail()" class="text-xs text-primary font-medium">Verificando
+                      disponibilidade...</span>
                   </div>
                 </div>
                 <p *ngIf="emailError()" class="block text-xs text-error mt-2 font-medium ml-2 animate-fade-up">
-                {{ emailError() }}
+                  {{ emailError() }}
                 </p>
               </div>
-              
+
               <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="confirm-email">Confirmar Novo Email</label>
-                <input class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50" 
-                       id="confirm-email" placeholder="Repita o novo email" type="email" [(ngModel)]="confirmEmail" name="confirmEmail"/>
+                <label class="block text-sm font-semibold text-on-surface mb-1" for="confirm-email">Confirmar Novo
+                  Email</label>
+                <input
+                  class="w-full h-12 px-4 rounded-full border border-outline-variant bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-base text-on-surface placeholder-on-surface-variant/50"
+                  id="confirm-email" placeholder="Repita o novo email" type="email" [(ngModel)]="confirmEmail"
+                  name="confirmEmail" />
               </div>
-              
+
               <div class="mt-auto pt-6">
-                <button (click)="changeEmail()" [disabled]="emailLoading() || emailError() || checkingEmail()" class="w-full h-12 bg-primary text-on-primary rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" type="button">
-                  <span *ngIf="emailLoading()" class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
+                <button (click)="changeEmail()" [disabled]="emailLoading() || emailError() || checkingEmail()"
+                  class="w-full h-12 bg-primary text-on-primary rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button">
+                  <span *ngIf="emailLoading()"
+                    class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
                   <span *ngIf="!emailLoading()" class="material-symbols-outlined text-[20px]">save</span>
                   {{ emailLoading() ? 'Salvando...' : 'Salvar Alterações' }}
                 </button>

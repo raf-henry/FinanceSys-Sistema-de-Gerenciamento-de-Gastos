@@ -1,11 +1,13 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { ExpenseService } from '../../services/expense.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContaService } from '../../services/conta.service';
 import { SidebarService } from '../../services/sidebar.service';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -20,14 +22,15 @@ export class Home implements OnInit {
   private authService = inject(AuthService);
   private contaService = inject(ContaService);
   public sidebarService = inject(SidebarService);
+  private transactionService = inject(TransactionService);
 
   expenses = signal<any[]>([]);
   contas = signal<any[]>([]);
-  
+
   get contaSelecionadaId() {
     return this.contaService.selectedContaId();
   }
-  
+
   set contaSelecionadaId(val: any) {
     // Garante que o valor seja número ou null
     const id = (val === 'null' || val === null) ? null : Number(val);
@@ -57,13 +60,22 @@ export class Home implements OnInit {
     const allContas = this.contas();
     const selectedId = this.contaSelecionadaId;
 
+    const calculateFallbackBalance = (gastos: any[]) => {
+      const entradas = gastos.filter(g => g.tipo === 'RECEITA' || g.tipo === 'ENTRADA' || g.tipo === 'RENDIMENTO').reduce((sum, g) => sum + (g.valor || 0), 0);
+      const saidas = gastos.filter(g => g.tipo === 'DESPESA' || g.tipo === 'SAIDA').reduce((sum, g) => sum + (g.valor || 0), 0);
+      return entradas - saidas;
+    };
+
     if (selectedId) {
       // Para uma conta específica: pega o saldo do lançamento mais recente
       const gastosDaConta = allExpenses
         .filter(g => (g.contaId === Number(selectedId) || g.conta?.id === Number(selectedId)))
         .sort((a, b) => new Date(b.dataGasto).getTime() - new Date(a.dataGasto).getTime());
-      
-      return gastosDaConta.length > 0 ? (gastosDaConta[0].saldo || 0) : 0;
+
+      if (gastosDaConta.length > 0) {
+        return (gastosDaConta[0].saldo && gastosDaConta[0].saldo !== 0) ? gastosDaConta[0].saldo : calculateFallbackBalance(gastosDaConta);
+      }
+      return 0;
     } else {
       // Para todas as contas: soma o último saldo de cada conta existente
       let total = 0;
@@ -71,9 +83,9 @@ export class Home implements OnInit {
         const gastosDaConta = allExpenses
           .filter(g => (g.contaId === conta.id || g.conta?.id === conta.id))
           .sort((a, b) => new Date(b.dataGasto).getTime() - new Date(a.dataGasto).getTime());
-        
+
         if (gastosDaConta.length > 0) {
-          total += (gastosDaConta[0].saldo || 0);
+          total += (gastosDaConta[0].saldo && gastosDaConta[0].saldo !== 0) ? gastosDaConta[0].saldo : calculateFallbackBalance(gastosDaConta);
         }
       });
       return total;
@@ -94,7 +106,7 @@ export class Home implements OnInit {
   showModal = false;
   isEditing = false;
   selectedExpenseId: number | null = null;
-  
+
   novoGasto = {
     descricao: '',
     categoria: 'Outros',
@@ -124,21 +136,99 @@ export class Home implements OnInit {
   }
 
   loadDashboardData() {
-    this.expenseService.getExpenses(this.contaSelecionadaId).subscribe({
-      next: (data) => this.expenses.set(data),
-      error: (err) => console.error('Erro ao buscar gastos', err)
-    });
+    const bank = this.currentBank();
 
-    this.expenseService.getKpis(this.contaSelecionadaId).subscribe({
-      next: (data) => {
-        this.stats.set({
-          totalGastos: data.totalGastos,
-          valorTotal: data.valorTotal,
-          gastoFixoMensal: data.gastoFixoMensal || 0
-        });
-      },
-      error: (err) => console.error('Erro ao buscar estatísticas', err)
-    });
+    if (bank === 'NUBANK') {
+      this.transactionService.getTransactions(this.contaSelecionadaId).subscribe({
+        next: (res) => {
+          const mapped = res.map(t => ({
+            ...t,
+            dataGasto: t.dataHora,
+            descricao: t.tituloExibicao,
+            tipo: t.tipoMovimentacao === 'ENTRADA' || t.tipoMovimentacao === 'RENDIMENTO' ? 'RECEITA' : 'DESPESA',
+            saldo: t.saldoMomento,
+            favorecido: t.nomeContraparte,
+            formaPagamento: t.formaPagamento
+          }));
+          this.expenses.set(mapped);
+
+          // KPIs para Nubank
+          const despesas = mapped.filter(m => m.tipo === 'DESPESA');
+          const totalValor = despesas.reduce((acc, curr) => acc + (curr.valor || 0), 0);
+          this.stats.set({
+            totalGastos: despesas.length,
+            valorTotal: totalValor,
+            gastoFixoMensal: 0
+          });
+        },
+        error: (err) => console.error('Erro ao carregar transações Nubank:', err)
+      });
+    } else if (bank === 'GERAL') {
+      forkJoin({
+        gastos: this.expenseService.getExpenses(null),
+        transacoes: this.transactionService.getTransactions(null)
+      }).subscribe({
+        next: ({ gastos, transacoes }) => {
+          const mappedTransacoes = transacoes.map(t => ({
+            ...t,
+            dataGasto: t.dataHora,
+            descricao: t.tituloExibicao,
+            tipo: t.tipoMovimentacao === 'ENTRADA' || t.tipoMovimentacao === 'RENDIMENTO' ? 'RECEITA' : 'DESPESA',
+            saldo: t.saldoMomento,
+            favorecido: t.nomeContraparte,
+            formaPagamento: t.formaPagamento
+          }));
+          const combined = [...gastos, ...mappedTransacoes];
+
+          // Sort by date desc
+          combined.sort((a, b) => {
+            const timeA = a.dataGasto ? new Date(a.dataGasto).getTime() : 0;
+            const timeB = b.dataGasto ? new Date(b.dataGasto).getTime() : 0;
+            return timeB - timeA;
+          });
+
+          this.expenses.set(combined);
+
+          // Combined KPIs
+          const despesas = combined.filter(m => m.tipo === 'DESPESA');
+          const totalValorDespesas = despesas.reduce((acc, curr) => acc + (curr.valor || 0), 0);
+
+          this.expenseService.getKpis(null).subscribe({
+            next: (data) => {
+              this.stats.set({
+                totalGastos: despesas.length,
+                valorTotal: totalValorDespesas,
+                gastoFixoMensal: data.gastoFixoMensal || 0
+              });
+            },
+            error: (err) => {
+              this.stats.set({
+                totalGastos: despesas.length,
+                valorTotal: totalValorDespesas,
+                gastoFixoMensal: 0
+              });
+            }
+          });
+        },
+        error: (err) => console.error('Erro ao buscar dados mesclados:', err)
+      });
+    } else {
+      this.expenseService.getExpenses(this.contaSelecionadaId).subscribe({
+        next: (data) => this.expenses.set(data),
+        error: (err) => console.error('Erro ao buscar gastos', err)
+      });
+
+      this.expenseService.getKpis(this.contaSelecionadaId).subscribe({
+        next: (data) => {
+          this.stats.set({
+            totalGastos: data.totalGastos,
+            valorTotal: data.valorTotal,
+            gastoFixoMensal: data.gastoFixoMensal || 0
+          });
+        },
+        error: (err) => console.error('Erro ao buscar estatísticas', err)
+      });
+    }
   }
 
   onContaChange() {
@@ -155,8 +245,8 @@ export class Home implements OnInit {
   abrirModalParaEditar(gasto: any) {
     this.isEditing = true;
     this.selectedExpenseId = gasto.id;
-    this.novoGasto = { 
-      descricao: gasto.descricao, 
+    this.novoGasto = {
+      descricao: gasto.descricao,
       categoria: gasto.categoria || 'Outros',
       valor: gasto.valor,
       tipo: gasto.tipo || 'DESPESA',
@@ -175,11 +265,11 @@ export class Home implements OnInit {
 
   salvarGasto() {
     this.calcularTotal();
-    
+
     if (this.novoGasto.descricao && this.novoGasto.valor > 0) {
       const descricaoFormatada = this.novoGasto.descricao.charAt(0).toUpperCase() + this.novoGasto.descricao.slice(1);
       const gastoParaSalvar: any = { ...this.novoGasto, descricao: descricaoFormatada };
-      
+
       if (this.contaSelecionadaId) {
         gastoParaSalvar.contaId = this.contaSelecionadaId;
       }
@@ -230,7 +320,7 @@ export class Home implements OnInit {
     const file = event.target.files[0];
     if (file && this.contaSelecionadaId) {
       this.isUploadingExtrato.set(true);
-      this.expenseService.uploadExtrato(file, this.contaSelecionadaId.toString()).subscribe({
+      this.expenseService.uploadExtrato(file, this.contaSelecionadaId.toString(), this.currentBank()).subscribe({
         next: (res) => {
           this.isUploadingExtrato.set(false);
           alert('Extrato processado com sucesso!');
@@ -256,9 +346,9 @@ export class Home implements OnInit {
     }
 
     const colunas = ['ID', 'TIPO', 'CATEGORIA', 'DESCRIÇÃO', 'FAVORECIDO', 'CPF/CNPJ', 'Nº DOC', 'STATUS', 'VALOR', 'DATA'];
-    
+
     // Adiciona o BOM (\uFEFF) para o Excel reconhecer acentuação corretamente
-    let csvContent = '\uFEFF'; 
+    let csvContent = '\uFEFF';
     csvContent += colunas.join(';') + '\r\n';
 
     data.forEach(item => {

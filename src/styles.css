@@ -4,40 +4,43 @@
 
 @theme {
   --font-manrope: "Manrope", sans-serif;
-  
+
   /* Premium SaaS Design System */
-  --color-primary: #0F172A; /* Slate 900 */
+  --color-primary: #0F172A;
+  /* Slate 900 */
   --color-on-primary: #ffffff;
   --color-primary-container: #1E293B;
   --color-on-primary-container: #94A3B8;
-  
-  --color-secondary: #10B981; /* Vibrant Emerald */
+
+  --color-secondary: #10B981;
+  /* Vibrant Emerald */
   --color-on-secondary: #ffffff;
   --color-secondary-container: #D1FAE5;
   --color-on-secondary-container: #065F46;
-  
-  --color-tertiary: #6366F1; /* Indigo */
+
+  --color-tertiary: #6366F1;
+  /* Indigo */
   --color-tertiary-container: #E0E7FF;
   --color-on-tertiary-container: #3730A3;
-  
+
   --color-error: #EF4444;
   --color-error-container: #FEE2E2;
   --color-on-error-container: #991B1B;
-  
+
   --color-background: #F8FAFC;
   --color-on-background: #0F172A;
-  
+
   --color-surface: #ffffff;
   --color-on-surface: #1E293B;
   --color-surface-variant: #F1F5F9;
   --color-on-surface-variant: #64748B;
-  
+
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #F8FAFC;
   --color-surface-container: #F1F5F9;
   --color-surface-container-high: #E2E8F0;
   --color-surface-container-highest: #CBD5E1;
-  
+
   --color-outline: #94A3B8;
   --color-outline-variant: #E2E8F0;
 
@@ -48,20 +51,49 @@
   --animate-float: float 3s ease-in-out infinite;
 
   @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
+
   @keyframes slide-up {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
+
   @keyframes scale-in {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
+
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-5px);
+    }
   }
 }
 
@@ -76,7 +108,7 @@
   .glass {
     @apply bg-white/70 backdrop-blur-md border border-white/20;
   }
-  
+
   .glass-dark {
     @apply bg-primary/80 backdrop-blur-md border border-white/10;
   }
@@ -89,10 +121,21 @@
     @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5;
   }
 
-  .stagger-1 { animation-delay: 100ms; }
-  .stagger-2 { animation-delay: 200ms; }
-  .stagger-3 { animation-delay: 300ms; }
-  .stagger-4 { animation-delay: 400ms; }
+  .stagger-1 {
+    animation-delay: 100ms;
+  }
+
+  .stagger-2 {
+    animation-delay: 200ms;
+  }
+
+  .stagger-3 {
+    animation-delay: 300ms;
+  }
+
+  .stagger-4 {
+    animation-delay: 400ms;
+  }
 }
 
 /* Material Symbols - Suporte Global */

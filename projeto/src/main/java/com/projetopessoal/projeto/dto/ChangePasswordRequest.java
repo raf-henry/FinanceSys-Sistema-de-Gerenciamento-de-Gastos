@@ -12,7 +12,7 @@ public class ChangePasswordRequest {
 
     @NotBlank(message = "Nova senha é obrigatória")
     @Size(min = 8, message = "A nova senha deve ter pelo menos 8 caracteres")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#@$!%*?&])[A-Za-z\\d#@$!%*?&]{8,}$", 
              message = "A nova senha deve conter ao menos uma letra maiúscula, uma minúscula, um número e um caractere especial")
     private String newPassword;
 }

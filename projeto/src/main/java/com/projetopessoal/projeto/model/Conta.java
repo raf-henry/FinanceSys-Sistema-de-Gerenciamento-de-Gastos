@@ -34,4 +34,8 @@ public class Conta {
     @JsonIgnore
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Gasto> gastos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
+    private List<Transacao> transacoes;
 }

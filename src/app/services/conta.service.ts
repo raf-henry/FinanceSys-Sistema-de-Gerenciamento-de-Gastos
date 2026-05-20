@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 export interface Conta {
@@ -23,27 +22,22 @@ export class ContaService {
   contas = signal<Conta[]>([]);
   selectedContaId = signal<number | null>(null);
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
-
-  private getHeaders() {
-    const token = localStorage.getItem('auth_token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
+  constructor(private http: HttpClient) {}
 
   getContas(): Observable<Conta[]> {
-    return this.http.get<Conta[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+    return this.http.get<Conta[]>(this.apiUrl).pipe(
       tap(contas => this.contas.set(contas))
     );
   }
 
   criarConta(conta: Conta): Observable<Conta> {
-    return this.http.post<Conta>(this.apiUrl, conta, { headers: this.getHeaders() }).pipe(
+    return this.http.post<Conta>(this.apiUrl, conta).pipe(
       tap(() => this.getContas().subscribe()) // Recarrega a lista após criar
     );
   }
 
   deletarConta(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       tap(() => this.getContas().subscribe()) // Recarrega a lista após deletar
     );
   }

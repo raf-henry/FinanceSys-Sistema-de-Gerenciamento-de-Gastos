@@ -19,4 +19,11 @@ public class GastoRequest {
     private Integer numeroParcelas;
     private Double valorParcela;
     private Long contaId;
+
+    private String favorecido;
+    private String nrDoc;
+    private String cpfCnpj;
+    private Double saldo;
+    private String categoria;
+    private String formaPagamento;
 }
